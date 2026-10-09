@@ -2,10 +2,13 @@
   "name": "devpocket",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port 3847",
     "build": "next build",
-    "start": "next start --hostname 0.0.0.0 --port 3847",
+    "start": "next start --hostname 0.0.0.0",
     "lint": "eslint",
     "test": "node --experimental-strip-types --test lib/tools/*.test.mts lib/history.test.mts"
   },
