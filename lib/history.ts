@@ -116,8 +116,31 @@ export function clearHistoryStorage(): void {
   window.dispatchEvent(new Event(HISTORY_EVENT));
 }
 
+function readablePayload(payload: string): string {
+  try {
+    const parsed = JSON.parse(payload) as {
+      source?: string;
+      input?: string;
+      unit?: string;
+    };
+    if (
+      parsed &&
+      typeof parsed.input === "string" &&
+      (parsed.source === "unix" || parsed.source === "date")
+    ) {
+      if (parsed.unit === "milliseconds") return `${parsed.input} ms`;
+      if (parsed.unit === "seconds") return `${parsed.input} s`;
+      return parsed.input;
+    }
+  } catch {
+    // Most history payloads are plain text.
+  }
+
+  return payload;
+}
+
 function previewText(payload: string): string {
-  const singleLine = payload.replace(/\s+/g, " ").trim();
+  const singleLine = readablePayload(payload).replace(/\s+/g, " ").trim();
   if (singleLine.length === 0) {
     return "(empty)";
   }

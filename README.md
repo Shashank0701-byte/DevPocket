@@ -11,6 +11,8 @@ npm run dev
 
 Open [http://127.0.0.1:3847](http://127.0.0.1:3847).
 
+The dev server listens on all interfaces. `127.0.0.1` is listed in `allowedDevOrigins` so the browser can connect to the dev socket and the page can hydrate.
+
 ```bash
 npm test
 npm run lint

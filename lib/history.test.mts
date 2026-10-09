@@ -9,6 +9,15 @@ import {
   type HistoryEntry,
 } from "./history.ts";
 
+test("previews timestamp payloads by their input", () => {
+  const entry = createHistoryEntry(
+    "timestamp",
+    JSON.stringify({ source: "unix", input: "1700000000", unit: "seconds" }),
+    1,
+  );
+  assert.equal(entry.preview, "1700000000 s");
+});
+
 test("previews and dedupes history", () => {
   const first = createHistoryEntry("json", '{\n  "a": 1\n}', 1000);
   assert.equal(first.preview, '{ "a": 1 }');

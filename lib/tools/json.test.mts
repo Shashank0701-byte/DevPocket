@@ -25,7 +25,7 @@ test("reports line and column for invalid JSON", () => {
   assert.equal(result.ok, false);
   if (result.ok) return;
 
-  assert.match(result.error, /line \d+, column \d+/);
+  assert.match(result.error, /line \d+,? column \d+/);
 });
 
 test("keeps parser messages that have no position", () => {

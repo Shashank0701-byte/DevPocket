@@ -30,6 +30,10 @@ export function processJson(input: string): JsonResult {
 
 function formatJsonError(input: string, error: unknown): string {
   const message = error instanceof Error ? error.message : "Invalid JSON.";
+  if (/\bline \d+\b/i.test(message) && /\bcolumn \d+\b/i.test(message)) {
+    return message;
+  }
+
   const match = /position\s+(\d+)/i.exec(message);
   if (!match) {
     return message;
