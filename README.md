@@ -1,8 +1,29 @@
 # DevPocket
 
-DevPocket is a local developer utility dashboard. Format JSON, encode and decode Base64, generate UUID v4 values, and convert Unix timestamps. Every tool runs in the browser. There are no external APIs and no environment variables.
+DevPocket is a dark, local developer dashboard for the small conversions you do every day. Format JSON, encode Base64, generate UUID v4 values, and turn Unix timestamps into dates. Every tool runs in the browser. Nothing is sent to a server, and the app needs no API keys or environment variables.
 
-## Setup
+## Features
+
+- **JSON Formatter.** Pretty-print, minify, and validate JSON. Parse errors include the line and column when the engine reports a position.
+- **Base64.** Encode and decode UTF-8 text, including characters outside ASCII. Invalid Base64 is reported instead of throwing.
+- **UUID Generator.** Create one to twenty version 4 UUIDs and copy a single value or the whole batch.
+- **Timestamp Converter.** Convert Unix seconds or milliseconds to a local date and UTC, or convert a local date back to Unix time. Thirteen or more digits are treated as milliseconds when the unit is set to Auto.
+- **Recent history.** Successful runs are stored in `localStorage`. Open an entry to restore it, or clear the list.
+- **Clipboard.** Copy actions show a success or error toast.
+- **Keyboard.** On a tool page, Ctrl or Cmd + Enter runs the main action: Format, Encode, Generate, or Convert.
+- **Layout.** Compact sidebar on desktop, sheet navigation on small screens.
+
+## Tech
+
+- Next.js App Router and TypeScript
+- Tailwind CSS and shadcn/ui
+- Lucide icons
+
+## Requirements
+
+Node.js 22 or newer. `.nvmrc` pins that version.
+
+## Local development
 
 ```bash
 npm install
@@ -11,26 +32,27 @@ npm run dev
 
 Open [http://127.0.0.1:3847](http://127.0.0.1:3847).
 
-The dev server listens on all interfaces. `127.0.0.1` is listed in `allowedDevOrigins` so the browser can connect to the dev socket and the page can hydrate.
+The dev server listens on all interfaces. `127.0.0.1` is listed in `allowedDevOrigins` so the browser can open the dev socket and the page can hydrate.
 
-```bash
-npm test
-npm run lint
-npm run build
-npm start
-```
+## Scripts
 
-`npm start` serves the production build and listens on `PORT` (3000 if unset). Node 22 or newer is required.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server on port 3847 |
+| `npm test` | Run the tool and history unit tests |
+| `npm run lint` | Lint the project |
+| `npm run build` | Create a production build |
+| `npm start` | Serve the production build. Uses `PORT`, or 3000 if unset |
 
 ## Deploy
 
-Nothing in this app needs an environment variable or a database. A host only has to install dependencies, run `npm run build`, and start Next.js.
+No environment variables and no database. A host only needs to install dependencies, build, and start Next.js.
 
 ### Vercel
 
-1. Push the repository to GitHub.
-2. Import it at [vercel.com/new](https://vercel.com/new).
-3. Leave the framework preset on Next.js. The build command is `npm run build`. Do not add environment variables.
+1. Import [this repository](https://github.com/Shashank0701-byte/DevPocket) at [vercel.com/new](https://vercel.com/new).
+2. Leave the framework preset on Next.js. The build command is `npm run build`.
+3. Do not add environment variables.
 4. Deploy. `.nvmrc` selects Node 22.
 
 ### Any Node host
@@ -41,27 +63,20 @@ npm run build
 npm start
 ```
 
-Set `PORT` if the platform does not use 3000.
+Set `PORT` when the platform does not use 3000.
 
-## GitHub
+## Project layout
 
-This project is not connected to a GitHub account from this environment. Create an empty repository on GitHub, then push `main`:
-
-```bash
-git remote add github https://github.com/YOUR_USER/devpocket.git
-git push -u github main
+```text
+app/                  routes: home, JSON, Base64, UUID, timestamp
+components/tools/     interactive tool screens
+components/layout/    sidebar, top bar, mobile sheet
+lib/tools/            pure conversion functions and tests
+lib/history.ts        recent-history storage
 ```
 
-After that push, the CI workflow runs tests, lint, and a production build on every push and pull request.
+History is kept under the `devpocket-history` key in `localStorage`, capped at 25 entries.
 
-## Features
+## CI
 
-- JSON formatter: format, minify, and validate JSON, including parse errors with line and column.
-- Base64 encoder and decoder for UTF-8 text, including non-ASCII characters.
-- UUID v4 generator with single and batch copy.
-- Timestamp converter for Unix seconds and milliseconds, local dates, and UTC.
-- Recent history stored in `localStorage`, with restore and clear.
-- Clipboard actions with success and error toasts.
-- Dashboard home with a short description of each tool.
-- Keyboard shortcut: Ctrl or Cmd + Enter runs the main action on a tool page.
-- Dark layout that works on mobile and desktop.
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs `npm test`, `npm run lint`, and `npm run build` on every push and pull request.
