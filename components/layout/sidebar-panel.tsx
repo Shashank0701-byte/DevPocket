@@ -115,7 +115,7 @@ export function SidebarPanel({ onNavigate }: { onNavigate?: () => void }) {
                     }}
                   >
                     <span className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-medium text-primary">{tool.label}</span>
+                      <span className="text-[11px] font-medium text-foreground/80">{tool.label}</span>
                       <span className="text-[10px] text-muted-foreground">
                         {formatWhen(entry.createdAt)}
                       </span>
